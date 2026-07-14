@@ -1,6 +1,7 @@
 ﻿#include "FrameBufferEmulator.h"
 
 
+// Graphics04
 //  buff フレームバッファの先頭アドレス
 //  width, height フレームバッファの高さと横幅
 //  radius 円の半径
@@ -44,10 +45,19 @@ void FrameBufferEmulator::initUser()
 // 描画処理（毎フレーム呼び出される）
 void FrameBufferEmulator::drawUser(unsigned char* buff, int mode, int keyLevel, int keyTrigger)
 {
-	unsigned char color[3] = { 10, 200, 0 }; // B, G, R
+	static unsigned char color[3] = { 10, 200, 0 }; // B, G, R
 
-	if (keyTrigger == SDLK_UP) { // 上矢印キーが押されたら
-		radius++;  // 半径を大きくする
+	if (keyLevel == SDLK_UP) { // 上矢印キーが押されたら
+		radius++; // 半径を大きくする
+	}
+	else if (keyLevel == SDLK_DOWN) { // 下矢印キーが押されたら
+		radius--; //半径を小さくする
+	}
+	else if (keyLevel == SDLK_LEFT) { // 左矢印キーが押されたら
+		color[1] = (color[1] - 5) % 255; //半径を小さくする
+	}
+	else if (keyLevel == SDLK_RIGHT) { // 右矢印キーが押されたら
+		color[1] = (color[1] + 5) % 255; //半径を小さくする
 	}
 	drawFilledCircle(buff, width, height, radius, centerX, centerY, color); // 円を描画する
 }
